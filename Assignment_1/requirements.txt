@@ -1,0 +1,6 @@
+datasets
+pandas
+pyarrow
+fastparquet
+regex
+tqdm
