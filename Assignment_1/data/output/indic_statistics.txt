@@ -1,0 +1,10 @@
+Corpus Statistics
+========================================
+
+Total Sentences: 163106
+Total Words: 3050392
+Total Characters: 11785831
+Average Sentence Length: 18.7
+Average Word Length: 3.86
+Unique Tokens: 103410
+Type Token Ratio: 0.0339
