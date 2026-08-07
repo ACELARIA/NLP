@@ -10,8 +10,7 @@ __pycache__/
 
 # Large datasets
 Assignment_1/data/indic/
-Assignment_1/data/output/
-Assignment_1/data/parquet/
+
 
 # Temporary files
 sample_statistics.txt
