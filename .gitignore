@@ -8,9 +8,8 @@ __pycache__/
 # VS Code
 .vscode/
 
-# Large datasets
+# Ignore only the original dataset
 Assignment_1/data/indic/
-
 
 # Temporary files
 sample_statistics.txt
