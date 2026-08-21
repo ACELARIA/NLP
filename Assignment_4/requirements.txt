@@ -1,0 +1,9 @@
+# No external packages are required.
+
+# This assignment uses Python standard library:
+# pathlib
+# random
+# sqlite3
+# collections
+# math
+# time

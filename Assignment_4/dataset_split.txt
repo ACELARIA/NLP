@@ -1,0 +1,15 @@
+ASSIGNMENT 4 - DATASET SPLIT
+============================================================
+
+Training sentences    : 98000
+Development sentences : 1000
+Testing sentences     : 1000
+
+Sample training sentence:
+ऐसे में वीडियो कॉन्फ्रेंसिंग के जरिए वादी की पेशी संभव नहीं है।
+
+Sample development sentence:
+गुरुवार ( 2 जनवरी ) को देश में पेट्रोल - डीजल के दाम 13 महीनों के अधिकतम स्तर पर पहुंच गए थे।
+
+Sample testing sentence:
+नई दिल्ली।

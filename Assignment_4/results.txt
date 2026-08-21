@@ -1,0 +1,34 @@
+ASSIGNMENT 4 - N-GRAM LANGUAGE MODELS
+======================================================================
+
+DATASET INFORMATION
+----------------------------------------------------------------------
+Total sentences : 100000
+Training        : 98000
+Development     : 1000
+Testing         : 1000
+Vocabulary size : 76812
+Training tokens : 1833357
+
+LAPLACE / ADD-ONE SMOOTHING
+----------------------------------------------------------------------
+P(w_n | w_1,...,w_(n-1)) = (C(w_1,...,w_n) + 1) / (C(w_1,...,w_(n-1)) + V)
+
+MODEL RESULTS
+----------------------------------------------------------------------
+
+Unigram Model
+Development Perplexity : 1673.1315
+Test Perplexity        : 1677.0597
+
+Bigram Model
+Development Perplexity : 5221.1139
+Test Perplexity        : 5046.3928
+
+Trigram Model
+Development Perplexity : 26741.2210
+Test Perplexity        : 25942.8837
+
+Quadrigram Model
+Development Perplexity : 45862.8910
+Test Perplexity        : 45196.1706
