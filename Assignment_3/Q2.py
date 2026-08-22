@@ -20,219 +20,79 @@
 # Invalid:
 #   foxs     = Invalid Word
 # ============================================================
-
-
-# ------------------------------------------------------------
-# Read Brown noun corpus
-# ------------------------------------------------------------
-
 INPUT_FILE = "brown_nouns.txt"
 OUTPUT_FILE = "brown_fst_output.txt"
 
 
-with open(INPUT_FILE, "r", encoding="utf-8") as file:
-    words = {
-        line.strip().lower()
-        for line in file
-        if line.strip()
-    }
-
+# Load noun lexicon
+with open(INPUT_FILE, "r", encoding="utf-8") as f:
+    words = {line.strip().lower() for line in f if line.strip()}
 
 print("Number of nouns in corpus:", len(words))
 
 
-# ------------------------------------------------------------
-# FST
-# ------------------------------------------------------------
-
 class NounFST:
 
     def __init__(self, lexicon):
-
         self.lexicon = lexicon
 
-        # FST states
-        self.states = {
-            "q0",          # start
-            "qROOT",       # reading root
-            "qNORMAL",     # normal ending
-            "qES",         # s, z, x, ch, sh ending
-            "qY",          # y ending
-            "qSG",         # singular
-            "qPL",         # plural
-            "qINVALID"     # invalid
-        }
-
-        self.start_state = "q0"
-
-    # --------------------------------------------------------
-    # Determine root class
-    # --------------------------------------------------------
-
-    def root_class(self, root):
-
-        if root.endswith(("s", "z", "x", "ch", "sh")):
-            return "ES"
-
-        if root.endswith("y"):
-            return "Y"
-
-        return "NORMAL"
-
-    # --------------------------------------------------------
-    # Analyze one noun
-    # --------------------------------------------------------
-
     def analyze(self, word):
-
         word = word.lower()
 
-        # Ignore empty strings
-        if not word:
+        if not word or not word.isalpha():
             return "Invalid Word"
 
-        # ----------------------------------------------------
-        # q0 -> qROOT
-        # ----------------------------------------------------
-
-        state = "q0"
-
-        if not word.isalpha():
-            return "Invalid Word"
-
-        state = "qROOT"
-
-        # ====================================================
-        # RULE 1: Y replacement
-        #
-        # try -> tries
-        # city -> cities
-        # ====================================================
-
+        # Rule 1: y -> ies
         if word.endswith("ies"):
-
             root = word[:-3] + "y"
-
-            if root in self.lexicon and root.endswith("y"):
-
-                state = "qY"
-                state = "qPL"
-
+            if root in self.lexicon:
                 return f"{root}+N+PL"
 
-        # ====================================================
-        # RULE 2: E insertion
-        #
-        # fox -> foxes
-        # box -> boxes
-        # watch -> watches
-        # church -> churches
-        # ====================================================
-
+        # Rule 2: add es
         if word.endswith("es"):
-
             root = word[:-2]
+            if root in self.lexicon and root.endswith(
+                ("s", "z", "x", "ch", "sh")
+            ):
+                return f"{root}+N+PL"
 
-            if root in self.lexicon:
-
-                if root.endswith(("s", "z", "x", "ch", "sh")):
-
-                    state = "qES"
-                    state = "qPL"
-
-                    return f"{root}+N+PL"
-
-        # ====================================================
-        # RULE 3: S addition
-        #
-        # bag -> bags
-        # dog -> dogs
-        # book -> books
-        # ====================================================
-
+        # Rule 3: add s
         if word.endswith("s"):
-
             root = word[:-1]
 
             if root in self.lexicon:
-
-                # -s must NOT be used with roots requiring -es
-                if root.endswith(("s", "z", "x", "ch", "sh")):
+                if root.endswith(("s", "z", "x", "ch", "sh", "y")):
                     return "Invalid Word"
-
-                # -y nouns use -ies
-                if root.endswith("y"):
-                    return "Invalid Word"
-
-                state = "qNORMAL"
-                state = "qPL"
 
                 return f"{root}+N+PL"
 
-        # ====================================================
-        # RULE 4: Singular
-        #
-        # If the word itself is in the noun lexicon,
-        # it can be analyzed as a singular noun.
-        # ====================================================
-
+        # Singular
         if word in self.lexicon:
-
-            state = "qSG"
-
             return f"{word}+N+SG"
-
-        # ====================================================
-        # No valid transition
-        # ====================================================
-
-        state = "qINVALID"
 
         return "Invalid Word"
 
 
-# ------------------------------------------------------------
 # Create FST
-# ------------------------------------------------------------
-
 fst = NounFST(words)
 
+# Analyze all words
+results = [
+    f"{word} = {fst.analyze(word)}"
+    for word in sorted(words)
+]
 
-# ------------------------------------------------------------
-# Process complete Brown corpus
-# ------------------------------------------------------------
-
-results = []
-
-for word in sorted(words):
-
-    analysis = fst.analyze(word)
-
-    results.append(
-        f"{word} = {analysis}"
-    )
-
-
-# ------------------------------------------------------------
 # Save output
-# ------------------------------------------------------------
-
-with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
-
-    for result in results:
-        file.write(result + "\n")
+with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    f.write("\n".join(results) + "\n")
 
 
-# ------------------------------------------------------------
-# Display first 50 results
-# ------------------------------------------------------------
-
+# Display first 50
 print("\nFirst 50 FST results:")
 print("----------------------------------------")
 
 for result in results[:50]:
     print(result)
-
 
 print("\n----------------------------------------")
 print("Processing complete.")
