@@ -1434,10 +1434,6 @@ def main():
             f"{total_time:.2f} seconds\n"
         )
 
-        f.write(
-            "\nNOTE:\n"
-        )
-
     print()
     print(
         "Results saved to: results.txt"

@@ -20,6 +20,4 @@ Kneser-Ney              2-gram          241.4436                  223.2149      
 Kneser-Ney              3-gram          196.6788                  173.7390                0                   
 Kneser-Ney              4-gram          208.6022                  183.1901                0                   
 ========================================================================================================================
-Total Execution Time: 59.60 seconds
-
-NOTE:
+Total Execution Time: 45.89 seconds
