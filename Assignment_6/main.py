@@ -1438,12 +1438,6 @@ def main():
             "\nNOTE:\n"
         )
 
-        f.write(
-            "Stupid Backoff is a scoring method rather than "
-            "a normalized probability model. Therefore, its "
-            "reported values are perplexity-style scores.\n"
-        )
-
     print()
     print(
         "Results saved to: results.txt"
