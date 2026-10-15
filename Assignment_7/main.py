@@ -32,9 +32,8 @@ TRAIN_FILE = "hindi-train-pos.txt"
 DEV_FILE = "hindi-dev-pos.txt"
 TEST_FILE = "hindi-test-pos.txt"
 OUTPUT_DIR = "pos_tagger_results"
-ALPHA = 0.1                 # Additive smoothing for HMM probabilities
+HMM_ALPHA = 0.1                 # Additive smoothing for HMM probabilities
 NB_ALPHA = 1.0              # Additive smoothing for Naive Bayes feature likelihoods
-HMM_ALPHA = 0.1
 UNKNOWN_WORD = "<UNK>"
 # -----------------------------------------------------------------
 
