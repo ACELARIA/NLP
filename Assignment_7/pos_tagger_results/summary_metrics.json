@@ -1,0 +1,66 @@
+[
+  {
+    "split": "dev",
+    "model": "Naive Bayes",
+    "tokens": 40762,
+    "accuracy": 0.9101859575094451,
+    "macro_f1": 0.7435880841155681,
+    "weighted_f1": 0.907886724340547
+  },
+  {
+    "split": "dev",
+    "model": "Forward Viterbi",
+    "tokens": 40762,
+    "accuracy": 0.9304008635493842,
+    "macro_f1": 0.9083031852363185,
+    "weighted_f1": 0.9300625474094872
+  },
+  {
+    "split": "dev",
+    "model": "Backward Viterbi",
+    "tokens": 40762,
+    "accuracy": 0.9304008635493842,
+    "macro_f1": 0.9083031852363185,
+    "weighted_f1": 0.9300625474094872
+  },
+  {
+    "split": "dev",
+    "model": "Forward-Backward (posterior)",
+    "tokens": 40762,
+    "accuracy": 0.9304499288553064,
+    "macro_f1": 0.9087175745756585,
+    "weighted_f1": 0.9299439091840063
+  },
+  {
+    "split": "test",
+    "model": "Naive Bayes",
+    "tokens": 41415,
+    "accuracy": 0.9103947844983702,
+    "macro_f1": 0.7599673770207667,
+    "weighted_f1": 0.9084661551161852
+  },
+  {
+    "split": "test",
+    "model": "Forward Viterbi",
+    "tokens": 41415,
+    "accuracy": 0.9283351442713993,
+    "macro_f1": 0.8684542683665227,
+    "weighted_f1": 0.9280783913994126
+  },
+  {
+    "split": "test",
+    "model": "Backward Viterbi",
+    "tokens": 41415,
+    "accuracy": 0.9283351442713993,
+    "macro_f1": 0.8684542683665227,
+    "weighted_f1": 0.9280783913994126
+  },
+  {
+    "split": "test",
+    "model": "Forward-Backward (posterior)",
+    "tokens": 41415,
+    "accuracy": 0.9289870819751298,
+    "macro_f1": 0.8638684458166163,
+    "weighted_f1": 0.9286243548019822
+  }
+]
