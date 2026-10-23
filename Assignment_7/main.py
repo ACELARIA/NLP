@@ -4,7 +4,7 @@ Algorithms:
 1. Greedy Naive Bayes with features: length, word, previous word, next word, previous predicted tag
 2. Forward Viterbi HMM
 3. Backward Viterbi HMM
-4. Forward-Backward HMM (bidirectional contextual tag scoring)
+4. Forward-Backward Viterbi HMM (max-product bidirectional decoding)
 
 Expected input:
 One token per line, with a word and POS tag separated by whitespace or a delimiter.
@@ -225,31 +225,52 @@ class HMMPOSTagger:
             path.append(next_ptr[i][path[-1]])
         return path
 
-    def forward_backward_sentence(self, words):
+    def forward_backward_viterbi_sentence(self, words):
         """
-        Forward-backward posterior decoding: sum over paths in the forward and
-        backward recurrences, then choose the most probable tag at each token.
-        This is not the same objective as Viterbi's best complete sequence.
+        Forward-backward Viterbi (max-product decoding).
+
+        Unlike posterior decoding, this uses MAX over paths rather than
+        log-sum-exp. The forward score includes the best path from the
+        beginning through the current token. The backward score is the
+        best suffix score after the current token (so its emission is not
+        counted twice). For each position, combine the two scores and
+        select the tag with the best complete-path score constrained to
+        that tag at that position.
         """
         if not words:
             return []
+
         n = len(words)
-        fwd, bwd = [{} for _ in range(n)], [{} for _ in range(n)]
+        fwd = [{} for _ in range(n)]
+        bwd = [{} for _ in range(n)]
+
+        # Forward max-product scores: best prefix ending in each tag.
         for t in self.tags:
             fwd[0][t] = self.log_start(t) + self.log_emit(t, words[0])
+
         for i in range(1, n):
             for t in self.tags:
-                fwd[i][t] = self.log_emit(t, words[i]) + logsumexp([
-                    fwd[i-1][p] + self.log_trans(p, t) for p in self.tags
-                ])
+                fwd[i][t] = self.log_emit(t, words[i]) + max(
+                    fwd[i - 1][p] + self.log_trans(p, t)
+                    for p in self.tags
+                )
+
+        # Backward max-product scores: best suffix after each current tag.
+        # The emission at position i is deliberately excluded from bwd[i].
         for t in self.tags:
-            bwd[n-1][t] = 0.0
-        for i in range(n-2, -1, -1):
+            bwd[n - 1][t] = 0.0
+
+        for i in range(n - 2, -1, -1):
             for t in self.tags:
-                bwd[i][t] = logsumexp([
-                    self.log_trans(t, q) + self.log_emit(q, words[i+1]) + bwd[i+1][q]
+                bwd[i][t] = max(
+                    self.log_trans(t, q)
+                    + self.log_emit(q, words[i + 1])
+                    + bwd[i + 1][q]
                     for q in self.tags
-                ])
+                )
+
+        # Max-product score of the best complete path constrained to each
+        # possible tag at this position. No posterior normalization/summing.
         return [
             max(self.tags, key=lambda t: fwd[i][t] + bwd[i][t])
             for i in range(n)
@@ -259,7 +280,7 @@ class HMMPOSTagger:
         method = {
             "forward": self.forward_viterbi_sentence,
             "backward": self.backward_viterbi_sentence,
-            "forward_backward": self.forward_backward_sentence,
+            "forward_backward": self.forward_backward_viterbi_sentence,
         }[algorithm]
         return [method([w for w, _ in s]) for s in sentences]
 
@@ -353,7 +374,7 @@ def main():
         ("Naive Bayes", lambda data: nb.predict(data)),
         ("Forward Viterbi", lambda data: hmm.predict(data, "forward")),
         ("Backward Viterbi", lambda data: hmm.predict(data, "backward")),
-        ("Forward-Backward (posterior)", lambda data: hmm.predict(data, "forward_backward")),
+        ("Forward-Backward Viterbi", lambda data: hmm.predict(data, "forward_backward")),
     ]
     all_rows, summaries = [], []
     for split, dataset in (("dev", dev), ("test", test)):
@@ -374,7 +395,7 @@ def main():
     print(f"\nDone. Results saved in: {out.resolve()}")
     print("Files: per_tag_metrics.csv, summary_metrics.csv, summary_metrics.json")
     print("Graphs: tag_f1_dev.png, tag_f1_test.png, overall_metrics_dev.png, overall_metrics_test.png")
-    print("Note: Forward-backward uses posterior decoding, not Viterbi sequence decoding.")
+    print("Note: Forward-Backward Viterbi uses max-product scores, not posterior marginals.")
 
 
 if __name__ == "__main__":
