@@ -1,0 +1,38 @@
+Loading data...
+train: 15087 sentences, 325710 tokens, 24 tags
+dev: 1866 sentences, 40762 tokens, 24 tags
+test: 1910 sentences, 41415 tokens, 24 tags
+
+Training Naive Bayes...
+Training HMM...
+Training MEMM (mxpost maximum-entropy tagger)...
+  ==> Training (10 iterations)
+/home/acelaria/.local/lib/python3.14/site-packages/nltk/classify/maxent.py:1380: RuntimeWarning: overflow encountered in power
+  exp_nf_delta = 2**nf_delta
+/home/acelaria/.local/lib/python3.14/site-packages/nltk/classify/maxent.py:1382: RuntimeWarning: invalid value encountered in multiply
+  sum1 = numpy.sum(exp_nf_delta * A, axis=0)
+/home/acelaria/.local/lib/python3.14/site-packages/nltk/classify/maxent.py:1383: RuntimeWarning: invalid value encountered in multiply
+  sum2 = numpy.sum(nf_exp_nf_delta * A, axis=0)
+Training CRF (this may take a few minutes)...
+
+Evaluating dev split...
+Naive Bayes                     | accuracy=0.9102 | macro-F1=0.7436 | weighted-F1=0.9079
+HMM Forward Viterbi             | accuracy=0.9304 | macro-F1=0.9083 | weighted-F1=0.9301
+HMM Backward Viterbi            | accuracy=0.9304 | macro-F1=0.9083 | weighted-F1=0.9301
+HMM Forward-Backward Viterbi    | accuracy=0.9304 | macro-F1=0.9083 | weighted-F1=0.9301
+MEMM                            | accuracy=0.9020 | macro-F1=0.7969 | weighted-F1=0.8994
+CRF                             | accuracy=0.9634 | macro-F1=0.9649 | weighted-F1=0.9633
+
+Evaluating test split...
+Naive Bayes                     | accuracy=0.9104 | macro-F1=0.7600 | weighted-F1=0.9085
+HMM Forward Viterbi             | accuracy=0.9283 | macro-F1=0.8685 | weighted-F1=0.9281
+HMM Backward Viterbi            | accuracy=0.9283 | macro-F1=0.8685 | weighted-F1=0.9281
+HMM Forward-Backward Viterbi    | accuracy=0.9283 | macro-F1=0.8685 | weighted-F1=0.9281
+MEMM                            | accuracy=0.9038 | macro-F1=0.7961 | weighted-F1=0.9009
+CRF                             | accuracy=0.9645 | macro-F1=0.9288 | weighted-F1=0.9644
+
+Done. Results saved in: /home/acelaria/NLP/Assignment_9/pos_tagger_results
+Tables: per_tag_metrics.csv, per_tag_metrics_dev.csv, per_tag_metrics_test.csv, summary_metrics.csv, summary_metrics.json
+Graphs: tag_f1_dev.png, tag_f1_test.png, overall_metrics_dev.png, overall_metrics_test.png
+
+Note: HMM Forward-Backward uses max-product Viterbi-style decoding, not posterior marginals.
