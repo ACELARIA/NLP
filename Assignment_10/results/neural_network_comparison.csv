@@ -1,0 +1,7 @@
+Embedding,Representation,Accuracy,Macro F1-score
+Word2Vec,average,0.818,0.818
+Word2Vec,tfidf,0.801,0.8009982089838809
+GloVe,average,0.798,0.7979191676670668
+GloVe,tfidf,0.765,0.7649471131004475
+FastText,average,0.804,0.8039498111516548
+FastText,tfidf,0.793,0.7929948248706218

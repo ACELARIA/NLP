@@ -1,0 +1,4 @@
+Embedding,Correct,Total Evaluated,Skipped,Accuracy (%),Candidate Scope
+Word2Vec,10368,19544,0,53.04952926729431,Analogy benchmark vocabulary (restricted)
+GloVe,15592,19544,0,79.77896029471961,Analogy benchmark vocabulary (restricted)
+FastText,13005,19544,0,66.5421612771183,Analogy benchmark vocabulary (restricted)
